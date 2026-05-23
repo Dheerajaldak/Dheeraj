@@ -1,6 +1,6 @@
 <!-- HEADER -->
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Dheerajaldak/Dheerajaldak/main/Header%20Design.svg" alt="Dheeraj Aldak" width="100%"/>
+  <img src="https://raw.githubusercontent.com/Dheerajaldak/Dheeraj/main/Header%20Design.svg" alt="Dheeraj Aldak" width="100%"/>
 </p>
 
 <!--------------- METRICS BADGES --------------->
@@ -98,7 +98,7 @@
       <!-- Scan4Discount -->
       <td align="center" width="33.3%" valign="top" style="border: none; padding: 8px;">
         <a href="https://scan4discount.com/in" target="_blank">
-          <img src="https://raw.githubusercontent.com/Dheerajaldak/Dheerajaldak/main/scan4discount.png" width="100%" alt="Scan4Discount" style="border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.6); border: 1px solid #1a1a1a;"/>
+          <img src="https://raw.githubusercontent.com/Dheerajaldak/Dheeraj/main/scan4discount.png" width="100%" alt="Scan4Discount" style="border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.6); border: 1px solid #1a1a1a;"/>
         </a>
         <br/><br/>
         <h3 align="left">🏷️ Scan4Discount — Full-Stack & Mobile</h3>
@@ -116,7 +116,7 @@
       <!-- Learning Management System -->
       <td align="center" width="33.3%" valign="top" style="border: none; padding: 8px; border-left: 1px solid #1a1a1a;">
         <a href="https://learning-management-system-dheeraj.vercel.app/" target="_blank">
-          <img src="https://raw.githubusercontent.com/Dheerajaldak/Dheerajaldak/main/lms.png" width="100%" alt="LMS Dashboard" style="border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.6); border: 1px solid #1a1a1a;"/>
+          <img src="https://raw.githubusercontent.com/Dheerajaldak/Dheeraj/main/lms.png" width="100%" alt="LMS Dashboard" style="border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.6); border: 1px solid #1a1a1a;"/>
         </a>
         <br/><br/>
         <h3 align="left">📚 Learning Management System (LMS)</h3>
@@ -132,7 +132,7 @@
       <!-- SalezTracker -->
       <td align="center" width="33.3%" valign="top" style="border: none; padding: 8px; border-left: 1px solid #1a1a1a;">
         <a href="https://saleztracker.com/" target="_blank">
-          <img src="https://raw.githubusercontent.com/Dheerajaldak/Dheerajaldak/main/saleztracker.png" width="100%" alt="SalezTracker" style="border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.6); border: 1px solid #1a1a1a;"/>
+          <img src="https://raw.githubusercontent.com/Dheerajaldak/Dheeraj/main/saleztracker.png" width="100%" alt="SalezTracker" style="border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.6); border: 1px solid #1a1a1a;"/>
         </a>
         <br/><br/>
         <h3 align="left">🛰️ SalezTracker — Live Location Tracking</h3>
@@ -214,5 +214,5 @@
 
 <!--------------- FOOTER --------------->
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Dheerajaldak/Dheerajaldak/main/Footer%20Design.svg" width="100%"/>
+  <img src="https://raw.githubusercontent.com/Dheerajaldak/Dheeraj/main/Footer%20Design.svg" width="100%"/>
 </p>

@@ -710,25 +710,25 @@
         // High-Fidelity Mapping: Replace remote GitHub URLs for Header and Footer SVGs with local SVGs
         // This ensures the custom SVG animations load locally instantly!
         markdown = markdown.replace(
-          /https:\/\/raw\.githubusercontent\.com\/Dheerajaldak\/Dheerajaldak\/main\/Header%20Design\.svg/gi,
+          /https:\/\/raw\.githubusercontent\.com\/Dheerajaldak\/Dheeraj(aldak)?\/main\/Header%20Design\.svg/gi,
           `./Header Design.svg?t=${timestamp}`
         );
         markdown = markdown.replace(
-          /https:\/\/raw\.githubusercontent\.com\/Dheerajaldak\/Dheerajaldak\/main\/Footer%20Design\.svg/gi,
+          /https:\/\/raw\.githubusercontent\.com\/Dheerajaldak\/Dheeraj(aldak)?\/main\/Footer%20Design\.svg/gi,
           `./Footer Design.svg?t=${timestamp}`
         );
 
         markdown = markdown.replace(
-          /https:\/\/raw\.githubusercontent\.com\/Dheerajaldak\/Dheerajaldak\/main\/scan4discount\.png/gi,
+          /https:\/\/raw\.githubusercontent\.com\/Dheerajaldak\/Dheeraj(aldak)?\/main\/scan4discount\.png/gi,
           `./scan4discount.png?t=${timestamp}`
         );
         markdown = markdown.replace(
-          /https:\/\/raw\.githubusercontent\.com\/Dheerajaldak\/Dheerajaldak\/main\/lms\.png/gi,
+          /https:\/\/raw\.githubusercontent\.com\/Dheerajaldak\/Dheeraj(aldak)?\/main\/lms\.png/gi,
           `./lms.png?t=${timestamp}`
         );
 
         markdown = markdown.replace(
-          /https:\/\/raw\.githubusercontent\.com\/Dheerajaldak\/Dheerajaldak\/main\/saleztracker\.png/gi,
+          /https:\/\/raw\.githubusercontent\.com\/Dheerajaldak\/Dheeraj(aldak)?\/main\/saleztracker\.png/gi,
           `./saleztracker.png?t=${timestamp}`
         );
         // Render HTML
