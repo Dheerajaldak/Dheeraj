@@ -166,7 +166,7 @@
     <tr style="background: none; border: none;">
       <!-- GitHub General Stats -->
       <td align="center" width="50%" style="border: none; padding: 10px;">
-        <img width="100%" src="https://github-readme-stats.vercel.app/api?username=Dheerajaldak&show_icons=true&hide_border=true&icon_color=FF3E3E&ring_color=FF3E3E&bg_color=000000&title_color=FF3E3E&text_color=FFFFFF&rank_icon=github" alt="Dheeraj's GitHub Stats"/>
+        <img width="100%" src="https://github-readme-stats-sigma-five.vercel.app/api?username=Dheerajaldak&show_icons=true&hide_border=true&icon_color=FF3E3E&ring_color=FF3E3E&bg_color=000000&title_color=FF3E3E&text_color=FFFFFF&rank_icon=github" alt="Dheeraj's GitHub Stats"/>
       </td>
       <!-- GitHub Streak Stats -->
       <td align="center" width="50%" style="border: none; padding: 10px; border-left: 1px solid #1a1a1a;">
@@ -176,11 +176,11 @@
     <tr style="background: none; border: none; border-top: 1px solid #1a1a1a;">
       <!-- Top Languages -->
       <td align="center" width="50%" style="border: none; padding: 10px;">
-        <img width="100%" src="https://github-readme-stats.vercel.app/api/top-langs/?username=Dheerajaldak&layout=compact&hide_border=true&card_width=400&bg_color=000000&text_color=FFFFFF&title_color=FF3E3E&langs_count=8" alt="Top Languages"/>
+        <img width="100%" src="https://github-readme-stats-sigma-five.vercel.app/api/top-langs/?username=Dheerajaldak&layout=compact&hide_border=true&card_width=400&bg_color=000000&text_color=FFFFFF&title_color=FF3E3E&langs_count=8" alt="Top Languages"/>
       </td>
       <!-- WakaTime Stats -->
       <td align="center" width="50%" style="border: none; padding: 10px; border-left: 1px solid #1a1a1a;">
-        <img width="100%" src="https://github-readme-stats.vercel.app/api/wakatime?username=Dheerajaldak&hide_border=true&layout=default&card_width=400&bg_color=000000&title_color=FF3E3E&text_color=FFFFFF&icon_color=FF3E3E" alt="WakaTime Analytics"/>
+        <img width="100%" src="https://github-readme-stats-anuraghazra.vercel.app/api/wakatime?username=Dheerajaldak&hide_border=true&layout=default&card_width=400&bg_color=000000&title_color=FF3E3E&text_color=FFFFFF&icon_color=FF3E3E" alt="WakaTime Analytics"/>
       </td>
     </tr>
     <tr style="background: none; border: none; border-top: 1px solid #1a1a1a;">
