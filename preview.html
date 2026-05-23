@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="celestial">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GitHub Profile Live Previewer</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  
+  <!-- Marked Markdown Parser (Secure CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <style>
+    /* ─── CUSTOM THEME VARIABLES ─── */
+    :root[data-theme="celestial"] {
+      --bg-primary: #050515;
+      --bg-secondary: #0a0b22;
+      --bg-tertiary: #101235;
+      --glass-bg: rgba(16, 18, 53, 0.4);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --text-main: #f0f3ff;
+      --text-muted: #8fa0dd;
+      --accent: #ff4141;
+      --accent-glow: rgba(255, 65, 65, 0.4);
+      --accent-secondary: #a855f7;
+      --sidebar-width: 320px;
+      --card-bg: #0b0c20;
+      --border-radius: 16px;
+      --github-markdown-bg: #03040e;
+      --github-markdown-border: rgba(255, 255, 255, 0.1);
+    }
+
+    :root[data-theme="github-dark"] {
+      --bg-primary: #0d1117;
+      --bg-secondary: #161b22;
+      --bg-tertiary: #21262d;
+      --glass-bg: rgba(22, 27, 34, 0.7);
+      --glass-border: rgba(240, 246, 252, 0.1);
+      --text-main: #c9d1d9;
+      --text-muted: #8b949e;
+      --accent: #58a6ff;
+      --accent-glow: rgba(88, 166, 255, 0.3);
+      --accent-secondary: #bc8cff;
+      --sidebar-width: 320px;
+      --card-bg: #0d1117;
+      --border-radius: 12px;
+      --github-markdown-bg: #0d1117;
+      --github-markdown-border: #30363d;
+    }
+
+    :root[data-theme="light"] {
+      --bg-primary: #f6f8fa;
+      --bg-secondary: #ffffff;
+      --bg-tertiary: #eff1f3;
+      --glass-bg: rgba(255, 255, 255, 0.8);
+      --glass-border: rgba(208, 215, 222, 0.6);
+      --text-main: #24292f;
+      --text-muted: #57606a;
+      --accent: #0969da;
+      --accent-glow: rgba(9, 105, 218, 0.2);
+      --accent-secondary: #8250df;
+      --sidebar-width: 320px;
+      --card-bg: #ffffff;
+      --border-radius: 12px;
+      --github-markdown-bg: #ffffff;
+      --github-markdown-border: #d0d7de;
+    }
+
+    /* ─── RESET & BASE STYLING ─── */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Custom Scrollbars */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-primary);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--bg-tertiary);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent);
+    }
+
+    /* ─── SIDEBAR / CONTROL PANEL ─── */
+    .sidebar {
+      width: var(--sidebar-width);
+      background-color: var(--bg-secondary);
+      border-right: 1px solid var(--glass-border);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      z-index: 10;
+      flex-shrink: 0;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-icon {
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 20px;
+      color: white;
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+
+    .logo-text h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      background: linear-gradient(to right, var(--text-main), var(--text-muted));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .logo-text p {
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .sidebar-section {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .section-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    /* Controls & Buttons */
+    .control-btn {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--glass-border);
+      color: var(--text-main);
+      padding: 12px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      text-align: center;
+      outline: none;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .control-btn:hover {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    .theme-picker {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .theme-option {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--glass-border);
+      padding: 10px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 13px;
+      color: var(--text-main);
+    }
+
+    .theme-option:hover {
+      border-color: var(--accent);
+      background: rgba(255, 65, 65, 0.05);
+    }
+
+    .theme-option.active {
+      border-color: var(--accent);
+      background: rgba(255, 65, 65, 0.08);
+      font-weight: 600;
+    }
+
+    .theme-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .dot-celestial { background: radial-gradient(circle, #ff4141, #a855f7); }
+    .dot-github { background: #58a6ff; }
+    .dot-light { background: #0969da; border: 1px solid #d0d7de; }
+
+    /* Live Badge Indicator */
+    .status-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(46, 204, 113, 0.1);
+      border: 1px solid rgba(46, 204, 113, 0.3);
+      padding: 8px 12px;
+      border-radius: 8px;
+      color: #2ecc71;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      background-color: #2ecc71;
+      border-radius: 50%;
+      box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7);
+      animation: pulse 1.6s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7);
+      }
+      70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 8px rgba(46, 204, 113, 0);
+      }
+      100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(46, 204, 113, 0);
+      }
+    }
+
+    /* Workspace File List */
+    .file-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .file-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: 'Fira Code', monospace;
+      color: var(--text-muted);
+      cursor: default;
+    }
+
+    .file-item:hover {
+      background: var(--bg-tertiary);
+      color: var(--text-main);
+    }
+
+    .file-icon {
+      font-size: 15px;
+    }
+
+    /* Footer Info */
+    .sidebar-footer {
+      margin-top: auto;
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: center;
+      line-height: 1.4;
+      border-top: 1px solid var(--glass-border);
+      padding-top: 16px;
+    }
+
+    /* ─── MAIN PREVIEW CONTAINER ─── */
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 30px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Ambient Glow (Celestial Theme) */
+    .ambient-glow {
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(255, 65, 65, 0.08) 0%, rgba(168, 85, 247, 0.05) 50%, rgba(0,0,0,0) 100%);
+      top: -100px;
+      right: -100px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Browser Mockup Window */
+    .browser-window {
+      flex: 1;
+      background-color: var(--github-markdown-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--border-radius);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+      z-index: 2;
+    }
+
+    .browser-header {
+      background-color: var(--bg-secondary);
+      border-bottom: 1px solid var(--glass-border);
+      height: 48px;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      justify-content: space-between;
+      user-select: none;
+    }
+
+    .window-controls {
+      display: flex;
+      gap: 8px;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .dot-close { background-color: #ff5f56; }
+    .dot-minimize { background-color: #ffbd2e; }
+    .dot-maximize { background-color: #27c93f; }
+
+    .address-bar {
+      background-color: var(--bg-primary);
+      border: 1px solid var(--glass-border);
+      border-radius: 6px;
+      width: 50%;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: var(--text-muted);
+      font-family: 'Fira Code', monospace;
+    }
+
+    .browser-actions {
+      display: flex;
+      gap: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Live Preview Render Area */
+    .preview-body {
+      flex: 1;
+      padding: 40px;
+      overflow-y: auto;
+    }
+
+    .readme-wrapper {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* ─── GITHUB MARKDOWN HIGH-FIDELITY STYLING ─── */
+    .markdown-body {
+      font-size: 16px;
+      line-height: 1.6;
+      word-wrap: break-word;
+      color: var(--text-main);
+    }
+
+    .markdown-body img {
+      max-width: 100%;
+      border-radius: 6px;
+    }
+
+    /* Spacing */
+    .markdown-body p, 
+    .markdown-body table, 
+    .markdown-body details {
+      margin-top: 0;
+      margin-bottom: 16px;
+    }
+
+    .markdown-body h1, 
+    .markdown-body h2 {
+      margin-top: 24px;
+      margin-bottom: 16px;
+      font-weight: 600;
+      line-height: 1.25;
+      padding-bottom: 0.3em;
+      border-bottom: 1px solid var(--github-markdown-border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .markdown-body h1 {
+      font-size: 2em;
+    }
+
+    .markdown-body h2 {
+      font-size: 1.5em;
+    }
+
+    .markdown-body table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 24px;
+      border: 1px solid var(--github-markdown-border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .markdown-body th, 
+    .markdown-body td {
+      padding: 12px 16px;
+      border: 1px solid var(--github-markdown-border);
+    }
+
+    .markdown-body tr {
+      background-color: var(--bg-secondary);
+    }
+
+    .markdown-body tr:nth-child(2n) {
+      background-color: var(--bg-primary);
+    }
+
+    /* Custom Table Hover Effects */
+    .markdown-body tr:hover {
+      background-color: rgba(255, 65, 65, 0.04) !important;
+      transition: background-color 0.2s ease;
+    }
+
+    /* Details/Summary Accordions */
+    .markdown-body details {
+      background-color: var(--bg-secondary);
+      border: 1px solid var(--github-markdown-border);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .markdown-body summary {
+      cursor: pointer;
+      font-weight: 600;
+      outline: none;
+      user-select: none;
+      padding: 4px;
+    }
+
+    .markdown-body summary h2 {
+      display: inline-flex;
+      margin: 0;
+      border: none;
+      padding: 0;
+      font-size: 1.3em;
+      vertical-align: middle;
+    }
+
+    /* Image responsive centering */
+    .markdown-body p[align="center"] {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .markdown-body p[align="center"] img {
+      max-height: 38px; /* For badges */
+    }
+
+    .markdown-body p[align="center"] a img {
+      transition: transform 0.2s ease, filter 0.2s ease;
+    }
+
+    .markdown-body p[align="center"] a img:hover {
+      transform: translateY(-3px);
+      filter: drop-shadow(0 4px 8px var(--accent-glow));
+    }
+
+    /* Large Header and Footer Designs */
+    .markdown-body img[width="100%"] {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+      border: 1px solid var(--glass-border);
+    }
+
+    /* Interactive Projects Table */
+    .markdown-body td img {
+      border-radius: 8px;
+      border: 1px solid var(--github-markdown-border);
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .markdown-body td:hover img {
+      transform: scale(1.05) translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .markdown-body td b {
+      display: inline-block;
+      margin-top: 8px;
+      color: var(--text-main);
+    }
+
+    /* YouTube section styling */
+    .markdown-body a img[alt*="3D"], 
+    .markdown-body a img[alt*="Coding"],
+    .markdown-body a img[alt*="Three"],
+    .markdown-body a img[alt*="Slider"],
+    .markdown-body a img[alt*="CodeGrid"],
+    .markdown-body a img[alt*="Winning"] {
+      border-radius: 8px;
+      margin: 8px;
+      transition: transform 0.3s ease, filter 0.3s ease;
+    }
+
+    .markdown-body a img[alt*="3D"]:hover, 
+    .markdown-body a img[alt*="Coding"]:hover,
+    .markdown-body a img[alt*="Three"]:hover,
+    .markdown-body a img[alt*="Slider"]:hover,
+    .markdown-body a img[alt*="CodeGrid"]:hover,
+    .markdown-body a img[alt*="Winning"]:hover {
+      transform: translateY(-4px) scale(1.03);
+      filter: brightness(1.1) drop-shadow(0 6px 12px rgba(255, 255, 255, 0.15));
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── SIDEBAR / CONTROL PANEL ─── -->
+  <div class="sidebar">
+    <div class="logo-container">
+      <div class="logo-icon">🪐</div>
+      <div class="logo-text">
+        <h1>Celestial Live</h1>
+        <p>Profile Previewer</p>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="section-title">Status</div>
+      <div class="status-badge">
+        <div class="pulse-dot"></div>
+        Live Server Connected
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="section-title">Controls</div>
+      <button class="control-btn" onclick="refreshPreview()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+        Force Refresh Content
+      </button>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="section-title">Preview Theme</div>
+      <div class="theme-picker">
+        <div class="theme-option active" data-theme-btn="celestial" onclick="switchTheme('celestial')">
+          <span>Celestial Night</span>
+          <div class="theme-dot dot-celestial"></div>
+        </div>
+        <div class="theme-option" data-theme-btn="github-dark" onclick="switchTheme('github-dark')">
+          <span>GitHub Dark</span>
+          <div class="theme-dot dot-github"></div>
+        </div>
+        <div class="theme-option" data-theme-btn="light" onclick="switchTheme('light')">
+          <span>Clean Light</span>
+          <div class="theme-dot dot-light"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="section-title">Workspace Files</div>
+      <div class="file-list">
+        <div class="file-item">
+          <span class="file-icon">📄</span>
+          <span>README.md</span>
+        </div>
+        <div class="file-item">
+          <span class="file-icon">🎨</span>
+          <span>Header Design.svg</span>
+        </div>
+        <div class="file-item">
+          <span class="file-icon">🎨</span>
+          <span>Footer Design.svg</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      <p>Antigravity Pair Coding</p>
+      <p style="opacity: 0.5; margin-top: 4px;">Dheeraj Aldak &copy; 2026</p>
+    </div>
+  </div>
+
+  <!-- ─── MAIN PREVIEW CONTAINER ─── -->
+  <div class="main-content">
+    <div class="ambient-glow"></div>
+
+    <!-- Browser Mockup Window -->
+    <div class="browser-window">
+      <div class="browser-header">
+        <div class="window-controls">
+          <div class="dot dot-close"></div>
+          <div class="dot dot-minimize"></div>
+          <div class="dot dot-maximize"></div>
+        </div>
+        <div class="address-bar">
+          localhost:3000/README.md
+        </div>
+        <div class="browser-actions">
+          <svg onclick="refreshPreview()" style="cursor: pointer;" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+        </div>
+      </div>
+
+      <!-- Live Preview Render Area -->
+      <div class="preview-body">
+        <div class="readme-wrapper">
+          <div id="readme-content" class="markdown-body">
+            <p style="text-align: center; color: var(--text-muted); font-size: 14px; margin-top: 40px;">
+              Loading your profile README and celestial designs...
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── CONTROLLER SCRIPTS ─── -->
+  <script>
+    // Configure Marked options
+    marked.setOptions({
+      gfm: true,
+      breaks: true,
+      headerIds: true,
+      mangle: false
+    });
+
+    // Theme Switcher
+    function switchTheme(themeName) {
+      document.documentElement.setAttribute('data-theme', themeName);
+      
+      // Update UI buttons
+      document.querySelectorAll('.theme-option').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      document.querySelector(`[data-theme-btn="${themeName}"]`).classList.add('active');
+    }
+
+    // Fetch and Render Markdown
+    async function loadMarkdown() {
+      const contentContainer = document.getElementById('readme-content');
+      try {
+        const timestamp = Date.now();
+        const response = await fetch(`./README.md?t=${timestamp}`);
+        if (!response.ok) {
+          throw new Error('Failed to load README.md');
+        }
+        let markdown = await response.text();
+
+        // High-Fidelity Mapping: Replace remote GitHub URLs for Header and Footer SVGs with local SVGs
+        // This ensures the custom SVG animations load locally instantly!
+        markdown = markdown.replace(
+          /https:\/\/raw\.githubusercontent\.com\/Dheerajaldak\/Dheerajaldak\/main\/Header%20Design\.svg/gi,
+          `./Header Design.svg?t=${timestamp}`
+        );
+        markdown = markdown.replace(
+          /https:\/\/raw\.githubusercontent\.com\/Dheerajaldak\/Dheerajaldak\/main\/Footer%20Design\.svg/gi,
+          `./Footer Design.svg?t=${timestamp}`
+        );
+
+        markdown = markdown.replace(
+          /https:\/\/raw\.githubusercontent\.com\/Dheerajaldak\/Dheerajaldak\/main\/scan4discount\.png/gi,
+          `./scan4discount.png?t=${timestamp}`
+        );
+        markdown = markdown.replace(
+          /https:\/\/raw\.githubusercontent\.com\/Dheerajaldak\/Dheerajaldak\/main\/lms\.png/gi,
+          `./lms.png?t=${timestamp}`
+        );
+
+        markdown = markdown.replace(
+          /https:\/\/raw\.githubusercontent\.com\/Dheerajaldak\/Dheerajaldak\/main\/saleztracker\.png/gi,
+          `./saleztracker.png?t=${timestamp}`
+        );
+        // Render HTML
+        contentContainer.innerHTML = marked.parse(markdown);
+
+        // Intercept links to open in a new tab
+        contentContainer.querySelectorAll('a').forEach(link => {
+          link.setAttribute('target', '_blank');
+        });
+      } catch (error) {
+        console.error('Error rendering markdown:', error);
+        contentContainer.innerHTML = `
+          <div style="text-align: center; color: #ff5f56; padding: 40px; border: 1px dashed rgba(255,95,86,0.3); border-radius: 8px;">
+            <h3>Error Loading Preview</h3>
+            <p style="margin-top: 10px; font-size: 14px; color: var(--text-muted);">${error.message}</p>
+            <button class="control-btn" style="width: auto; margin: 20px auto 0;" onclick="refreshPreview()">Retry</button>
+          </div>
+        `;
+      }
+    }
+
+    // Manual Refresh
+    function refreshPreview() {
+      const btn = document.querySelector('.control-btn');
+      btn.innerHTML = `<svg class="spin" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="animation: spin 1s linear infinite;"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg> Refreshing...`;
+      
+      loadMarkdown().then(() => {
+        setTimeout(() => {
+          btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg> Force Refresh Content`;
+        }, 600);
+      });
+    }
+
+    // Add keyframe for spin animation
+    const style = document.createElement('style');
+    style.innerHTML = `@keyframes spin { 100% { transform: rotate(360deg); } }`;
+    document.head.appendChild(style);
+
+    // Initial Load
+    window.addEventListener('DOMContentLoaded', () => {
+      loadMarkdown();
+      
+      // Auto-refresh preview every 3 seconds to reflect editor saves instantly!
+      setInterval(() => {
+        loadMarkdown();
+      }, 3000);
+    });
+  </script>
+</body>
+</html>
